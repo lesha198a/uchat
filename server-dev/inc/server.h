@@ -4,5 +4,7 @@
 
 #ifndef UCHAT_SERVER_SERVER_H
 #define UCHAT_SERVER_SERVER_H
+#include <glib.h>
+#include <gio/gio.h>
 
 #endif //UCHAT_SERVER_SERVER_H

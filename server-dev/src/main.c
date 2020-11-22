@@ -1,6 +1,7 @@
 //
 // Created by Oleksii Kalnytskyi on 11/22/20.
 //
+#include "../inc/server.h"
 
 int main (int argv, char **argc) {
     /* initialize glib */
