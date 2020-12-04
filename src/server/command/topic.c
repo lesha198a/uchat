@@ -3,7 +3,7 @@
 static void	send_channel_topic(t_channel *chan, t_users *user)
 {
 	if (chan->topic[0] == '\0')
-		rpl_notopic(chan, user);
+        rpl_notopic(user);
 	else
 		rpl_topic(chan, user);
 }
@@ -16,7 +16,7 @@ static void	notify_topic_change(t_channel *chan, t_users *user, char *old_top)
 
 	tmp = chan->users;
 	len = snprintf(buf, MAX_INPUT_LEN + CRLF, \
-		"%s changed topic from '%s' to '%s'\r\n", \
+		"srv;rpl;%s changed topic from '%s' to '%s';\r\n", \
 		user->nick.nick, old_top, chan->topic);
 	while (tmp != NULL)
 	{
@@ -33,7 +33,7 @@ static void	modify_channel_topic(t_channel *chan, t_users *user, char *new_top)
 	size = ft_strlen(new_top);
 	if (size > MAX_TOPIC_LEN)
 	{
-		err_topictoolong(user, new_top);
+        err_topictoolong(user);
 		return ;
 	}
 	ft_memset(old_top, 0x0, MAX_TOPIC_LEN + 1);
@@ -52,7 +52,7 @@ void		irc_topic(t_server *server, t_users *user, char **command)
 		chan = channel_search(&server->channel, command[1]);
 		if (chan == NULL)
 		{
-			err_nosuchchannel(user, command[1]);
+            err_nosuchchannel(user);
 			return ;
 		}
 		if (command[2] == NULL)
@@ -62,11 +62,11 @@ void		irc_topic(t_server *server, t_users *user, char **command)
 		}
 		if (user->chan != chan)
 		{
-			err_notonchannel(user, chan->name);
+            err_notonchannel(user);
 			return ;
 		}
 		modify_channel_topic(chan, user, command[2]);
 		return ;
 	}
-	err_needmoreparams(user, command[0]);
+    err_needmoreparams(user);
 }

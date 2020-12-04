@@ -22,12 +22,12 @@ static bool	check_nick(t_users *users_list, t_users *user, char *nick, int size)
 {
 	if (size < 1 || size > MAX_NICK_LEN)
 	{
-		err_erroneusnickname(user, nick);
+        err_erroneusnickname(user);
 		return (false);
 	}
 	if (is_available(users_list, user, nick, size) != true)
 	{
-		err_nicknameinuse(user, nick);
+        err_nicknameinuse(user);
 		return (false);
 	}
 	return (true);
@@ -71,7 +71,7 @@ void		irc_nick(t_server *server, t_users *user, char **command)
 	{
 		if (command[2] != NULL)
 		{
-			err_toomanyarguments(user, command[1]);
+            err_toomanyarguments(user);
 			return ;
 		}
 		size = ft_strlen(command[1]);
@@ -85,5 +85,5 @@ void		irc_nick(t_server *server, t_users *user, char **command)
 		notify_channel(user, old_nick);
 		return ;
 	}
-	err_needmoreparams(user, command[0]);
+    err_needmoreparams(user);
 }

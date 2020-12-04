@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   initialize.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ddinaut <ddinaut@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/04 10:20:46 by ddinaut           #+#    #+#             */
-/*   Updated: 2019/10/04 19:43:10 by ddinaut          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../inc/server.h"
 
 bool	create_server(t_server *server, struct addrinfo *base)
@@ -31,7 +19,7 @@ bool	create_server(t_server *server, struct addrinfo *base)
 	freeaddrinfo(base);
 	if (ptr == NULL)
 	{
-		printf("[Log !] Can't bind address. abort\n");
+		//printf("[Log !] Can't bind address. abort\n");
 		return (false);
 	}
 	return (true);
@@ -48,14 +36,14 @@ bool	initialize(t_server *server, const char *port)
 	hints.ai_protocol = IPPROTO_TCP;
 	if (getaddrinfo(NULL, port, &hints, &base) != 0)
 	{
-		printf("[LOG !] Can't get address with %s.\n", port);
+		//printf("[LOG !] Can't get address with %s.\n", port);
 		return (false);
 	}
 	if (create_server(server, base) != true)
 		return (false);
 	if (listen(server->sock, MAX_QUEUE) < 0)
 	{
-		printf("[LOG !] Can't listen socket !\n");
+		//printf("[LOG !] Can't listen socket !\n");
 		return (false);
 	}
 	init_kill_pass(server);

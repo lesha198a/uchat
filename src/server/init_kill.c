@@ -30,5 +30,5 @@ void	init_kill_pass(t_server *server)
 		count++;
 	}
 	server->kill_pass[count] = '\0';
-	printf("[LOG +] Kill pass generated : [%s].\n", server->kill_pass);
+	//printf("[LOG +] Kill pass generated : [%s].\n", server->kill_pass);
 }

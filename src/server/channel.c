@@ -17,7 +17,7 @@ t_channel	*channel_create(char *name)
 	new_chan->name_len = len;
 	new_chan->users = NULL;
 	new_chan->next = NULL;
-	printf("[LOG +] Channel created '%s'\n", new_chan->name);
+	//printf("[LOG +] Channel created '%s'\n", new_chan->name);
 	return (new_chan);
 }
 
@@ -75,7 +75,7 @@ void		channel_delete(t_channel **channel, char *name)
 		if (ft_strncmp(tmp->name, name, \
 				len > tmp->name_len ? len : tmp->name_len) == 0)
 		{
-			printf("[LOG -] Remove channel '%s'\n", tmp->name);
+			//printf("[LOG -] Remove channel '%s'\n", tmp->name);
 			if (prev == NULL)
 				(*channel) = tmp->next;
 			else

@@ -22,12 +22,12 @@ static bool	check_nick(t_users *users_list, t_users *user, char *nick, int size)
 {
     if (size < 1 || size > MAX_NICK_LEN)
     {
-        err_erroneusnickname(user, nick);
+        err_erroneusnickname(user);
         return (false);
     }
     if (is_available(users_list, user, nick, size) != true)
     {
-        err_nicknameinuse(user, nick);
+        err_nicknameinuse(user);
         return (false);
     }
     return (true);
@@ -37,7 +37,7 @@ static void	send_response_bad(t_users *user)
     int		len;
     char	buf[MAX_INPUT_LEN + CRLF];
 
-    len = snprintf(buf, MAX_INPUT_LEN + CRLF, SIGN_BAD);
+    len = snprintf(buf, MAX_INPUT_LEN + CRLF,SRV_STT_mask, SIGN_BAD);
     circular_send(user->socket, buf, len);
 }
 
@@ -46,7 +46,7 @@ static void	send_response_good(t_users *user)
     int		len;
     char	buf[MAX_INPUT_LEN + CRLF];
 
-    len = snprintf(buf, MAX_INPUT_LEN + CRLF, SIGN_GOOD);
+    len = snprintf(buf, MAX_INPUT_LEN + CRLF,SRV_STT_mask, SIGN_GOOD);
     circular_send(user->socket, buf, len);
 }
 

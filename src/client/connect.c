@@ -34,7 +34,7 @@ static bool	connect_to_server(t_user *user, struct addrinfo *base)
 	return (true);
 }
 
-bool		irc_connect(t_interface *inter, t_user *user, char *ip, char *port)
+bool irc_connect(t_user *user, char *ip, char *port)
 {
 	struct addrinfo hints;
 	struct addrinfo *base;
@@ -49,33 +49,40 @@ bool		irc_connect(t_interface *inter, t_user *user, char *ip, char *port)
 	if (connect_to_server(user, base) != true)
 		return (false);
 	user->connected = true;
-	refresh_top_interface(inter, "Connected to %s/%s !", ip, port);
+	//refresh_top_interface(inter, "Connected to %s/%s !", ip, port);
 	return (true);
 }
 
-void		wrapper_connect(t_interface *inter, t_user *user, char **cmd)
+void wrapper_connect(t_user *user, char **cmd)
 {
 	bool ret;
 
 	ret = false;
 	if (user->connected != true)
 	{
-		if (cmd[1] == NULL)
-			refresh_top_interface(inter, "error: %s [ip <port>]", cmd[0]);
+		if (cmd[1] == NULL) {
+		    //todo check it
+            //refresh_top_interface(inter, "error: %s [ip <port>]", cmd[0]);
+        }
 		else if (cmd[2] == NULL)
 		{
-			refresh_top_interface(inter, BASIC_PORT_STR, cmd[1], DEFAULT_PORT);
-			if (irc_connect(inter, user, cmd[1], DEFAULT_PORT) == false)
-				refresh_top_interface(inter, "Can't connect to %s:%s.", \
-										cmd[1], cmd[2]);
+		    //todo check it
+			//refresh_top_interface(inter, BASIC_PORT_STR, cmd[1], DEFAULT_PORT);
+			if (irc_connect(user, cmd[1], DEFAULT_PORT) == false) {
+			    //todo check it
+                //refresh_top_interface(inter, "Can't connect to %s:%s.", cmd[1], cmd[2]);
+            }
 		}
 		else
 		{
-			if (irc_connect(inter, user, cmd[1], cmd[2]) == false)
-				refresh_top_interface(inter, "Can't connect to %s:%s.", \
-										cmd[1], cmd[2]);
+			if (irc_connect(user, cmd[1], cmd[2]) == false) {
+			    //todo check it
+                //refresh_top_interface(inter, "Can't connect to %s:%s.",cmd[1], cmd[2]);
+            }
 		}
 	}
-	else
-		refresh_top_interface(inter, "you are already connected.");
+	else {
+	    //todo check it
+        //refresh_top_interface(inter, "you are already connected.");
+    }
 }

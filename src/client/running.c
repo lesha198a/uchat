@@ -1,100 +1,90 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   running.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ddinaut <ddinaut@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/28 15:00:32 by ddinaut           #+#    #+#             */
-/*   Updated: 2019/10/04 09:34:02 by Dje              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../inc/client.h"
 
-static void	init_fd(t_user *user)
-{
-	FD_ZERO(&user->client.read);
-	FD_ZERO(&user->client.write);
-	FD_ZERO(&user->client.master);
-	FD_SET(STDIN_FILENO, &user->client.master);
+t_user *user1;
+
+pthread_t core;
+pthread_mutex_t sign_lock = PTHREAD_MUTEX_INITIALIZER;
+sem_t sem_finish;
+bool very_unsafe = false;
+
+void setInput(char *text) {
+    char *buf = strndup(text, 511);
+    strcpy(user1->input, buf);
+    //free(buf);
+    setInputReady(true);
 }
 
-static void	reset_data(t_interface *inter, char *buf)
-{
-	ft_memset(buf, 0x0, MAX_INPUT_LEN + CRLF);
-	inter->off = 0;
-	inter->len = 0;
-	inter->curmax = 0;
-	inter->cursor = CURSOR_START;
-	wclear(inter->bot);
-	refresh_bot_interface(inter, buf);
+void setUser(t_user *user) {
+    user1 = user;
 }
 
-static void	read_from_user(t_interface *inter, t_user *user)
-{
-	wint_t key;
-
-	if (inter->status == true)
-		key = wgetch(inter->bot);
-	else
-		key = getc(stdin);
-	if (key == KEY_LEFT)
-		do_key_left(inter, user->input);
-	else if (key == KEY_RIGHT)
-		do_key_right(inter, user->input);
-	else if (key == 127)
-		delete_char(inter, user->input);
-	else if (key == '\n')
-	{
-		if (inter->len > 0 && inter->len < MAX_INPUT_LEN)
-		{
-			inter->len += CRLF;
-			interpreter(inter, user);
-			reset_data(inter, user->input);
-		}
-	}
-	else
-		insert_char(inter, user->input, key);
+void setNick(char *nick) {
+    user1->nick = strdup(nick);
 }
 
-static void	read_from_server(t_interface *inter, t_user *user)
-{
-	char buf[MAX_INPUT_LEN + CRLF];
-
-	memset(buf, 0x0, MAX_INPUT_LEN + CRLF);
-	if (circular_get(inter, user) != true)
-	{
-		FD_CLR(user->socket, &user->client.master);
-		close(user->socket);
-		user->connected = false;
-		refresh_top_interface(inter, "Disconnected from server :_:\n");
-		return ;
-	}
-	while (search_for_crlf(user->read.buf, user->read.head, user->read.len))
-	{
-		extract_and_update(&user->read, buf);
-		refresh_top_interface(inter, "%s", buf);
-	}
+static void init_fd(t_user *user) {
+    FD_ZERO(&user->client.read);
+    FD_ZERO(&user->client.write);
+    FD_ZERO(&user->client.master);
+    FD_SET(STDIN_FILENO, &user->client.master);
 }
 
-void		running(t_interface *inter, t_user *user)
-{
-	init_fd(user);
-	while (user->running == true)
-	{
-		user->client.read = user->client.master;
-		user->client.write = user->client.master;
-		if (user->connected == true && \
-			!FD_ISSET(user->socket, &user->client.master))
-			FD_SET(user->socket, &user->client.master);
-		if (select(user->socket + 1, &user->client.read, \
-				&user->client.write, NULL, NULL) < 0)
-			return ;
-		if (FD_ISSET(STDIN_FILENO, &user->client.read))
-			read_from_user(inter, user);
-		else if (user->connected == true && \
-			FD_ISSET(user->socket, &user->client.read))
-			read_from_server(inter, user);
-	}
+static void reset_data(char *buf) {
+    ft_memset(buf, 0x0, MAX_INPUT_LEN + CRLF);
+    setInputReady(false);
+    //todo clearing entry
+}
+
+static void read_from_user(t_user *user) {
+    if (strlen(user->input) > 0 && strlen(user->input) < MAX_INPUT_LEN) {
+        interpreter(user);
+        reset_data(user->input);
+    }
+
+}
+
+static void read_from_server(t_user *user) {
+    char buf[MAX_INPUT_LEN + CRLF];
+
+    memset(buf, 0x0, MAX_INPUT_LEN + CRLF);
+    if (circular_get(user) != true) {
+        FD_CLR(user->socket, &user->client.master);
+        close(user->socket);
+        user->connected = false;
+        //todo check it
+        //refresh_top_interface(inter, "Disconnected from server :_:\n");
+        return;
+    }
+    while (search_for_crlf(user->read.buf, user->read.head, user->read.len)) {
+        extract_and_update(&user->read, buf);
+        respondHandler(buf, user);
+        //refresh_top_interface(inter, "%s", buf);
+    }
+}
+
+void *running(void *user) {
+    t_user *user_conv = (t_user *) user;
+    init_fd(user_conv);
+    setUser(user_conv);
+    while (user_conv->running == true) {
+        user_conv->client.read = user_conv->client.master;
+        user_conv->client.write = user_conv->client.master;
+        if (user_conv->connected == true && \
+            !FD_ISSET(user_conv->socket, &user_conv->client.master))
+            FD_SET(user_conv->socket, &user_conv->client.master);
+        if (select(user_conv->socket + 1, &user_conv->client.read, \
+                &user_conv->client.write, NULL, NULL) < 0)
+            return NULL;
+        if (isInputReady())
+            read_from_user(user_conv);
+        else if (user_conv->connected == true && \
+            FD_ISSET(user_conv->socket, &user_conv->client.read))
+            read_from_server(user_conv);
+        if (very_unsafe) {
+            return NULL;
+        }
+        //usleep(100);
+    }
+    return NULL;
 }

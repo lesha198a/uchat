@@ -33,7 +33,7 @@ bool	accept_connection(t_server *server)
 	user->socket = accept(server->sock, (struct sockaddr*)&addr, &len);
 	if (user->socket < 0)
 	{
-		printf("[LOG !] Error : can't accept new user");
+		//printf("[LOG !] Error : can't accept new user");
 		user_remove(&server->users, user->socket);
 		return (false);
 	}
@@ -42,7 +42,7 @@ bool	accept_connection(t_server *server)
 	if (user->socket > server->info.fd_max)
 		server->info.fd_max = user->socket;
 	user_push(&server->users, user);
-	printf("[LOG +] new user : '%s'\n", user->nick.nick);
+	//printf("[LOG +] new user : '%s'\n", user->nick.nick);
 	rpl_welcome(user);
 	return (true);
 }
@@ -53,7 +53,7 @@ void	close_connection(t_server *server, t_users *user)
 
 	if (user->socket == server->info.fd_max)
 		server->info.fd_max -= 1;
-	printf("[LOG -] Remove user '%s'\n", user->nick.nick);
+	//printf("[LOG -] Remove user '%s'\n", user->nick.nick);
 	close(user->socket);
 	FD_CLR(user->socket, &server->info.master);
 	if (user->chan != NULL)

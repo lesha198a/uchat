@@ -8,17 +8,17 @@ void	irc_help(t_server *server, t_users *user, char **command)
 	(void)server;
 	(void)command;
 	len = snprintf(buf, MAX_INPUT_LEN + CRLF, \
-		"/help                : print this help\r\n"		\
-		"/nick <name>         : change username\r\n"		\
-		"/list [chan]         : list channel\r\n"			\
-		"/join <chan>         : join channel\r\n"			\
-		"/leave <chan>        : leave channel\r\n"			\
-		"/topic <chan [topic]>: show/set topic\r\n"			\
-		"/who [chan]          : list connected user\r\n"	\
-		"/msg <usr> <message> : send message to user\r\n"	\
-		"/connect <ip [port]> : connect to server\r\n"		\
-		"/quit                : quit irc\r\n"				\
-		"/kill [passwd]       : shutdown connected server\r\n");
+		"srv;rpl;/help                : print this help;\r\n"		\
+		"srv;rpl;/nick <name>         : change username;\r\n"		\
+		"srv;rpl;/list [chan]         : list channel;\r\n"			\
+		"srv;rpl;/join <chan>         : join channel;\r\n"			\
+		"srv;rpl;/leave <chan>        : leave channel;\r\n"			\
+		"srv;rpl;/topic <chan [topic]>: show/set topic;\r\n"			\
+		"srv;rpl;/who [chan]          : list connected user;\r\n"	\
+		"srv;rpl;/msg <usr> <message> : send message to user;\r\n"	\
+		"srv;rpl;/connect <ip [port]> : connect to server;\r\n"		\
+		"srv;rpl;/quit                : quit irc;\r\n"				\
+		"srv;rpl;/kill [passwd]       : shutdown connected server;\r\n");
 	if (FD_ISSET(user->socket, &server->info.write))
 		circular_send(user->socket, buf, len);
 }

@@ -39,8 +39,8 @@ void irc_msg(t_server *server, t_users *user, char **command) {
             setup_message_to_chan(src, (t_channel *) dst, command[2]);
             return;
         }
-        err_nosuchnick(user, command[1]);
+        err_nosuchnick(user);
         return;
     }
-    err_needmoreparams(user, command[0]);
+    err_needmoreparams(user);
 }

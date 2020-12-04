@@ -5,8 +5,7 @@ static void	send_response(t_users *user, char *nick,char *text)
     int		len;
     char	buf[MAX_INPUT_LEN + CRLF];
 
-    len = snprintf(buf, MAX_INPUT_LEN + CRLF, CHANNEL_MSG,
-                   ((t_channel*)user->chan)->name, nick, text);
+    len = snprintf(buf, MAX_INPUT_LEN + CRLF, CHANNEL_MSG, nick, text);
     circular_send(user->socket, buf, len);
 }
 

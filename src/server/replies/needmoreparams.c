@@ -1,10 +1,10 @@
 #include "../../../inc/server.h"
 
-void	err_needmoreparams(t_users *user, char *command)
+void err_needmoreparams(t_users *user)
 {
 	int		len;
 	char	buf[MAX_INPUT_LEN + CRLF];
 
-	len = snprintf(buf, MAX_INPUT_LEN + CRLF, ERR_NEEDMOREPARAMS, command);
+	len = snprintf(buf, MAX_INPUT_LEN + CRLF, SRV_ERR_mask, ERR_NEEDMOREPARAMS);
 	circular_send(user->socket, buf, len);
 }

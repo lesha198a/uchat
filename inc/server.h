@@ -210,42 +210,39 @@ void irc_gethistory(t_server *server, t_users *user, char **command);
 /*
 ** replies
 */
-void err_unknow_command(t_users *user, char *command);
+void err_unknow_command(t_users *user);
 
-void err_notonchannel(t_users *user, char *name);
+void err_notonchannel(t_users *user);
 
-void err_nosuchchannel(t_users *user, char *channel);
+void err_nosuchchannel(t_users *user);
 
 void err_toomanychannels(t_users *user, char *chan_name);
 
-void err_needmoreparams(t_users *user, char *command);
+void err_needmoreparams(t_users *user);
 
-void err_nicknameinuse(t_users *user, char *nick);
+void err_nicknameinuse(t_users *user);
 
-void err_erroneusnickname(t_users *user, char *nick);
+void err_erroneusnickname(t_users *user);
 
 void err_erroneuschanname(t_users *user, char *name);
 
-void err_nosuchnick(t_users *user, char *nick);
+void err_nosuchnick(t_users *user);
 
 void err_erroneuschar(t_users *user);
 
-void err_topictoolong(t_users *user, char *topic);
+void err_topictoolong(t_users *user);
 
-void err_toomanyarguments(t_users *user, char *command);
+void err_toomanyarguments(t_users *user);
 
 void rpl_topic(t_channel *channel, t_users *user);
 
-void rpl_notopic(t_channel *channel, t_users *user);
+void rpl_notopic(t_users *user);
 
-void rpl_whoreply(t_channel *chan, t_users *user, \
-                                        char *nick, char *buf);
+void rpl_whoreply(t_users *user, char *nick, char *buf);
 
-void rpl_endofwho(t_channel *chan,
-                  t_users *user, char *buf);
+void rpl_endofwho(t_users *user, char *buf);
 
-void rpl_namreply(t_channel *chan, t_users *user, \
-                                        char *nick, char *buf);
+void rpl_namreply(t_users *user, char *nick, char *buf);
 
 void rpl_endofnames(t_channel *chan, \
                                             t_users *user, char *buf);

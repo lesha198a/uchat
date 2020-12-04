@@ -13,6 +13,7 @@ bool db_init() {
         FILE *users = fopen(DB_users, "wt");
         if (!users)
             return false;
+        fprintf(users, "0;0;\n");
         fclose(users);
     }
     return true;

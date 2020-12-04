@@ -7,8 +7,8 @@ void	shutdown_users(t_users **users)
 	t_users	*nxt;
 	char	buf[MAX_INPUT_LEN + CRLF];
 
-	len = snprintf(buf, MAX_INPUT_LEN + CRLF, \
-		"[server] Hello, i'm going to shut down. Bye !\r\n");
+	len = snprintf(buf, MAX_INPUT_LEN + CRLF, SRV_RPL_mask,
+		"Hello, i'm going to shut down. Bye !");
 	tmp = *users;
 	while (tmp != NULL)
 	{
@@ -45,18 +45,18 @@ void	irc_kill(t_server *server, t_users *user, char **command)
 			len = KILL_PASS_LEN;
 		if (ft_strncmp(server->kill_pass, command[1], len) == 0)
 		{
-			printf("[LOG :(] Valid kill command received by <%s[%d]>'.\n", \
+			//printf("[LOG :(] Valid kill command received by <%s[%d]>'.\n", \
 				user->nick.nick, user->socket);
-			printf("\tFreeing channels\n");
+			//printf("\tFreeing channels\n");
 			shutdown_channels(&server->channel);
-			printf("\tFreeing users\n");
+			//printf("\tFreeing users\n");
 			shutdown_users(&server->users);
-			printf("\tFreeing command\n");
+			//printf("\tFreeing command\n");
 			command_free(command);
-			printf("\tClosing socket\n");
+			//printf("\tClosing socket\n");
 			disconnectx(server->sock, SAE_ASSOCID_ANY, SAE_CONNID_ANY);
 			close(server->sock);
-			printf("[LOG :(] Done, Bye !\n");
+			//printf("[LOG :(] Done, Bye !\n");
 			exit(EXIT_SUCCESS);
 		}
 	}

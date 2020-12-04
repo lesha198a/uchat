@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   receive.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ddinaut <ddinaut@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/20 13:06:28 by ddinaut           #+#    #+#             */
-/*   Updated: 2019/10/04 14:49:27 by ddinaut          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../inc/client.h"
 
@@ -59,7 +49,7 @@ void	circular_push(t_circular *circ, char *received, int size)
 	}
 }
 
-bool	circular_get(t_interface *inter, t_user *user)
+bool circular_get(t_user *user)
 {
 	int				ret;
 	unsigned char	data[MAX_INPUT_LEN + CRLF];
@@ -70,7 +60,8 @@ bool	circular_get(t_interface *inter, t_user *user)
 	ret = recv(user->socket, data, (MAX_INPUT_LEN + CRLF) - user->read.len, 0);
 	if (ret < 1)
 	{
-		refresh_top_interface(inter, "Can't receive data from server");
+	    //todo check it
+		//refresh_top_interface(inter, "Can't receive data from server");
 		return (false);
 	}
 	rc4_decrypt(SECRET_KEY, data, decrypted, ret);
@@ -79,14 +70,16 @@ bool	circular_get(t_interface *inter, t_user *user)
 	return (true);
 }
 
-void	circular_send(t_interface *inter, t_user *user)
+void circular_send(t_user *user)
 {
 	uint8_t encrypted[MAX_INPUT_LEN + CRLF];
 
-	rc4_encrypt(SECRET_KEY, (unsigned char*)user->input, encrypted, inter->len);
-	if (send(user->socket, encrypted, inter->len, 0) < 0)
+	rc4_encrypt(SECRET_KEY, (unsigned char*)user->input, encrypted, (int)strlen(user->input));
+	if (send(user->socket, encrypted, (int)strlen(user->input), 0) < 0)
 	{
-		refresh_top_interface(inter, "Can't send data to server.");
+		//refresh_top_interface(inter, "Can't send data to server.");
+		//todo check it
 		return ;
 	}
+	usleep(50);
 }

@@ -58,7 +58,7 @@ bool	circular_get(t_users *user)
 	ret = recv(user->socket, data, (MAX_INPUT_LEN + CRLF) - user->read.len, 0);
 	if (ret < 1)
 	{
-		printf("[LOG !] Can't receive data from [%d]\n", user->socket);
+		//printf("[LOG !] Can't receive data from [%d]\n", user->socket);
 		return (false);
 	}
 	if (user->read.len + ret > MAX_INPUT_LEN)
@@ -79,9 +79,11 @@ void	circular_send(int socket, char *data, int size)
 	rc4_encrypt(SECRET_KEY, (unsigned char*)data, encrypted, size);
 	if (send(socket, encrypted, size, 0) < 0)
 	{
-		printf("[LOG !] Can't send data to %d\n", socket);
+		//printf("[LOG !] Can't send data to %d\n", socket);
 		return ;
 	}
-	else
-		printf("Sent to %d : '%s'", socket, data);
+	else {
+        //printf("Sent to %d : '%s'", socket, data);
+        }
+    usleep(50);
 }

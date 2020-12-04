@@ -39,7 +39,7 @@ static bool	handle_command(t_server *server, t_users *user, char **command)
 		count++;
 	}
 	if (FD_ISSET(user->socket, &server->info.write))
-		err_unknow_command(user, command[0]);
+        err_unknow_command(user);
 	return (false);
 }
 
@@ -54,8 +54,7 @@ static void	handle_message(t_server *server, t_users *user, char *final)
 	if (usr_list == NULL)
 		return ;
     db_addmessage(((t_channel*)user->chan)->name,user->nick.nick,final);
-	len = snprintf(to_send, MAX_INPUT_LEN + CRLF, CHANNEL_MSG, \
-		((t_channel*)user->chan)->name, user->nick.nick, final);
+	len = snprintf(to_send, MAX_INPUT_LEN + CRLF, CHANNEL_MSG, user->nick.nick, final);
 	while (usr_list != NULL)
 	{
 		if (FD_ISSET(usr_list->user->socket, &server->info.write))

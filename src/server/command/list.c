@@ -44,7 +44,7 @@ void		irc_list(t_server *server, t_users *user, char **command)
 	{
 		if (command[2] != NULL)
 		{
-			err_toomanyarguments(user, command[0]);
+            err_toomanyarguments(user);
 			return ;
 		}
 		irc_list_one(server, user, command[1]);

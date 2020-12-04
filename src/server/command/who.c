@@ -8,10 +8,10 @@ static void	gather_all_user_in_chan(t_channel *chan, t_users *user)
 	tmp = chan->users;
 	while (tmp != NULL)
 	{
-		rpl_whoreply(chan, user, tmp->user->nick.nick, buf);
+        rpl_whoreply(user, tmp->user->nick.nick, buf);
 		tmp = tmp->next;
 	}
-	rpl_endofwho(chan, user, buf);
+    rpl_endofwho(user, buf);
 }
 
 void		irc_who(t_server *server, t_users *user, char **command)
@@ -22,17 +22,17 @@ void		irc_who(t_server *server, t_users *user, char **command)
 	{
 		if (command[2] != NULL)
 		{
-			err_toomanyarguments(user, command[0]);
+            err_toomanyarguments(user);
 			return ;
 		}
 		chan = channel_search(&server->channel, command[1]);
 		if (chan == NULL)
 		{
-			err_nosuchchannel(user, command[1]);
+            err_nosuchchannel(user);
 			return ;
 		}
 		gather_all_user_in_chan(chan, user);
 		return ;
 	}
-	err_needmoreparams(user, command[0]);
+    err_needmoreparams(user);
 }

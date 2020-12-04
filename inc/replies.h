@@ -30,65 +30,78 @@
 /*
 ** Error replies string following rfc 1459
 */
-# define ERR_NOSUCHNICK            "[server] <%s> :No such nick/channel.\r\n"
-# define ERR_NOSUCHSERVER        "[server] <%s> :No such server.\r\n"
-# define ERR_NOSUCHCHANNEL        "[server] <%s> :No such channel.\r\n"
-# define ERR_CANNOTSENDTOCHAN    "[server] <%s> :Cannot send to channel.\r\n"
-# define ERR_TOOMANYCHANNELS    "[server] <%s> :You joined too many chan.\r\n"
+# define SRV_ERR_mask "srv;err;%s;\r\n"
+# define SRV_RPL_mask "srv;rpl;%s;\r\n"
+# define SRV_STT_mask "srv;stt;%s;\r\n"
 
-# define ERR_NORECIPIENT        "[server] :No recipient given (<%s>).\r\n"
-# define ERR_NOTEXTTOSEND        "[server] :No text to send.\r\n"
-# define ERR_UNKNOWNCOMMAND        "[server] <%s> :Unknown command.\r\n"
+# define SERVER_code "srv"
+# define USER_code "usr"
+# define REPLY_code "rpl"
+# define ERROR_code "err"
+# define NOTIFICATION_code "ntf"
+# define STATUS_code "stt"
 
-# define ERR_NONICKNAMEGIVEN    "[server] :No nickname given.\r\n"
-# define ERR_ERRONEUSNICKNAME    "[server] <%s> :Erroneus nickname.\r\n"
-# define ERR_ERRONEUSCHANNAME    "[server] <%s> :Erroneus chan name.\r\n"
-# define ERR_NICKNAMEINUSE        "[server] <%s> :Nickname is already in use.\r\n"
-# define ERR_NICKCOLLISION        "[server] <%s> :Nickname collision KILL.\r\n"
+# define ERR_NOSUCHNICK            "no_such_nick"
+# define ERR_NOSUCHSERVER        "no_such_server"
+# define ERR_NOSUCHCHANNEL        "no_such_channel"
+# define ERR_CANNOTSENDTOCHAN    "cannot_send_to_channel"
+# define ERR_TOOMANYCHANNELS    "too_many_channels"
 
-# define ERR_USERNOTINCHANNEL    "[server] <%s> <%s> :not on that channel.\r\n"
-# define ERR_NOTONCHANNEL        "[server] <%s> :You're not on that channel.\r\n"
-# define ERR_NOLOGIN            "[server] <%s> :User not logged in.\r\n"
-# define ERR_NEEDMOREPARAMS        "[server] <%s> :Not enough parameters.\r\n"
-# define ERR_CANTKILLSERVER        "[server] :You cant kill a server.\r\n"
+# define ERR_NORECIPIENT        "no_recipient"
+# define ERR_NOTEXTTOSEND        "no_text_to_send"
+# define ERR_UNKNOWNCOMMAND        "unknown_command"
+
+# define ERR_NONICKNAMEGIVEN    "no_nick_is_given"
+# define ERR_ERRONEUSNICKNAME    "invalid_nick"
+# define ERR_ERRONEUSCHANNAME    "invalid_channel_name"
+# define ERR_NICKNAMEINUSE        "nick_is_already_used"
+# define ERR_NICKCOLLISION        "nick_collicion_kill"
+
+# define ERR_USERNOTINCHANNEL    "user_is_not_in_channel"
+# define ERR_NOTONCHANNEL        "you_are_not_in_that_channel"
+# define ERR_NOLOGIN            "not_signed_in"
+# define ERR_NEEDMOREPARAMS        "need_more_parameters"
+# define ERR_CANTKILLSERVER        "you_cannot_kill_a_server"
 
 /*
-** Normal replies
+Normal replies
 */
 # define RPL_LISTSTART_ID        321
 # define RPL_LIST_ID            322
 # define RPL_LISTEND_ID            323
 
-# define RPL_LISTSTART            "[server] Channel :Users  Name\r\n"
-# define RPL_LIST                "[server] <%s> <%d>\r\n"
-# define RPL_ENDOFLIST            "[server] End of /list.\r\n"
 
-# define RPL_TOPIC                "[server] <%s> :<%s>.\r\n"
-# define RPL_NOTOPIC            "[server] <%s> :No topic is set.\r\n"
 
-# define RPL_NAMREPLY            "[server] <%s> :<%s>.\r\n"
-# define RPL_ENDOFNAMES            "[server] <%s> :End of /NAMES list.\r\n"
+# define RPL_LISTSTART            "[only for you] List of users:"
+# define RPL_LIST                "srv;rpl;[only for you]  <%s> <%d>;\r\n"
+# define RPL_ENDOFLIST            "[only for you] End of list."
 
-# define RPL_WHOREPLY            "[server] <%s> :<%s>.\r\n"
-# define RPL_ENDOFWHO            "[server] <%s> :End of /NAMES list.\r\n"
+# define RPL_TOPIC                "srv;rpl;Topic is %s;\r\n"
+# define RPL_NOTOPIC            "No topic is set"
+
+//use rpl mask # define RPL_NAMREPLY            "srv;rpl;<%s>\r\n"
+# define RPL_ENDOFNAMES            "[only for you] End of /NAMES list."
+
+//use rpl mask # define RPL_WHOREPLY            "srv;rpl;<%s>.;\r\n"
+# define RPL_ENDOFWHO            "[only for you] End of /NAMES list."
 
 /*
-** Custom replies
+Custom replies
 */
 
-# define ERR_TOOMANYARGUMENTS    "[server] :'%s' too many arguments.\r\n"
-# define ERR_ERRONEUSCHAR        "[server] :Input got forbidden character.\r\n"
-# define JOIN_NOTIF                "[server] :'%s' has joined %s.\r\n"
-# define LEAVE_NOTIF            "[server] :'%s' leaved channel.\r\n"
-# define LEAVE_CHAN                "[server] :Disconnected from '%s'.\r\n"
-# define MESSAGE_STR            "[msg] [%s] :%s\r\n"
-# define NICK_RESP                "[server] :You are now known as '%s'.\r\n"
-# define NICK_NOTIF                "[server] :'%s' is now known as '%s'.\r\n"
-# define QUIT_NOTIF                "[server] :'%s' quit: %s\r\n"
-# define TOPIC_TOO_LONG            "[server] :<%s> :Topic too long.\r\n"
-# define RPL_WELCOME            "Welcome '%s' ! Use '/help' for help !\r\n"
-# define SIGN_BAD                 "[server];false\r\n"
-# define SIGN_GOOD                "[server];true\r\n"
-# define CHANNEL_MSG               "[%s] %s : %s\r\n"
+# define ERR_TOOMANYARGUMENTS    "too_many_arguments"
+# define ERR_ERRONEUSCHAR        "forbidden_character"
+# define JOIN_NOTIF                "srv;ntf;%s has joined %s.;\r\n"
+# define LEAVE_NOTIF            "srv;ntf;%s left channel.;\r\n"
+# define LEAVE_CHAN                "left_channel"
+# define MESSAGE_STR            "usr;rpl;%s;[only for you] %s;\r\n"
+# define NICK_RESP                "srv;rpl;[only for you] Your nick is %s;\r\n"
+# define NICK_NOTIF                "srv;rpl;%s is known as %s;\r\n"
+# define QUIT_NOTIF                "srv;rpl;%s quit: %s;\r\n"
+# define TOPIC_TOO_LONG            "[only for you] Topic too long"
+# define RPL_WELCOME            "connected"
+# define SIGN_BAD                 "bad_credentials"
+# define SIGN_GOOD                "good_credentials"
+# define CHANNEL_MSG               "usr;rpl;%s;%s;\r\n"
 
 #endif

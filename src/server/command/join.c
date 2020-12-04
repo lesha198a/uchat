@@ -23,7 +23,7 @@ static void	notify_channel(t_channel_user *chan_users, t_users *user)
 	t_channel_user	*tmp;
 
 	tmp = chan_users;
-	len = snprintf(buf, MAX_INPUT_LEN + CRLF, JOIN_NOTIF, \
+	len = snprintf(buf, MAX_INPUT_LEN + CRLF, JOIN_NOTIF,
 		user->nick.nick, ((t_channel*)user->chan)->name);
 	while (tmp != NULL)
 	{
@@ -41,12 +41,12 @@ static void	notify_user(t_channel *chan, t_users *user)
 	if (chan->topic[0] != '\0')
 		rpl_topic(chan, user);
 	else
-		rpl_notopic(chan, user);
+        rpl_notopic(user);
 	tmp = chan->users;
 	while (tmp != NULL)
 	{
 		ft_memset(buf, 0x0, MAX_INPUT_LEN + CRLF);
-		rpl_namreply(chan, user, tmp->user->nick.nick, buf);
+        rpl_namreply(user, tmp->user->nick.nick, buf);
 		tmp = tmp->next;
 	}
 	ft_memset(buf, 0x0, MAX_INPUT_LEN + CRLF);
@@ -84,7 +84,7 @@ void		irc_join(t_server *server, t_users *user, char **command)
 	{
 		if (command[2] != NULL)
 		{
-			err_toomanyarguments(user, command[1]);
+            err_toomanyarguments(user);
 			return ;
 		}
 		if (check_name(command[1]) == false)
@@ -100,5 +100,5 @@ void		irc_join(t_server *server, t_users *user, char **command)
 		manage_user_join(server, user, command[1]);
 		return ;
 	}
-	err_needmoreparams(user, command[0]);
+    err_needmoreparams(user);
 }
